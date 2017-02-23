@@ -29,8 +29,7 @@ public final class Globals {
      * The servlet context attribute under which we store the alternate
      * deployment descriptor for this web application
      */
-    public static final String ALT_DD_ATTR =
-        "org.apache.catalina.deploy.alt_dd";
+    public static final String ALT_DD_ATTR = "org.apache.catalina.deploy.alt_dd";
 
 
     /**
@@ -38,8 +37,7 @@ public final class Globals {
      * objects representing the certificate chain presented by our client,
      * if any.
      */
-    public static final String CERTIFICATES_ATTR =
-        "javax.servlet.request.X509Certificate";
+    public static final String CERTIFICATES_ATTR = "javax.servlet.request.X509Certificate";
 
 
     /**
@@ -47,30 +45,26 @@ public final class Globals {
      * being used on an SSL connection (as an object of type
      * java.lang.String).
      */
-    public static final String CIPHER_SUITE_ATTR =
-        "javax.servlet.request.cipher_suite";
+    public static final String CIPHER_SUITE_ATTR = "javax.servlet.request.cipher_suite";
 
 
     /**
      * Request dispatcher state.
      */
-    public static final String DISPATCHER_TYPE_ATTR =
-        "org.apache.catalina.core.DISPATCHER_TYPE";
+    public static final String DISPATCHER_TYPE_ATTR = "org.apache.catalina.core.DISPATCHER_TYPE";
 
 
     /**
      * Request dispatcher path.
      */
-    public static final String DISPATCHER_REQUEST_PATH_ATTR =
-        "org.apache.catalina.core.DISPATCHER_REQUEST_PATH";
+    public static final String DISPATCHER_REQUEST_PATH_ATTR = "org.apache.catalina.core.DISPATCHER_REQUEST_PATH";
 
 
     /**
      * The JNDI directory context which is associated with the context. This
      * context can be used to manipulate static files.
      */
-    public static final String RESOURCES_ATTR =
-        "org.apache.catalina.resources";
+    public static final String RESOURCES_ATTR = "org.apache.catalina.resources";
 
 
     /**

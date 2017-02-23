@@ -17,27 +17,15 @@
 package org.apache.catalina.core;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.WeakHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.regex.Pattern;
-
-import org.apache.catalina.Container;
-import org.apache.catalina.Context;
-import org.apache.catalina.Globals;
-import org.apache.catalina.Host;
-import org.apache.catalina.Lifecycle;
-import org.apache.catalina.LifecycleEvent;
-import org.apache.catalina.LifecycleException;
-import org.apache.catalina.LifecycleListener;
-import org.apache.catalina.Valve;
+import org.apache.catalina.*;
 import org.apache.catalina.loader.WebappClassLoaderBase;
 import org.apache.catalina.mbeans.MBeanUtils;
 import org.apache.catalina.valves.ValveBase;
 import org.apache.tomcat.util.ExceptionUtils;
+
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.regex.Pattern;
 
 
 /**
@@ -50,8 +38,7 @@ import org.apache.tomcat.util.ExceptionUtils;
  */
 public class StandardHost extends ContainerBase implements Host {
 
-    private static final org.apache.juli.logging.Log log=
-        org.apache.juli.logging.LogFactory.getLog( StandardHost.class );
+    private static final org.apache.juli.logging.Log log= org.apache.juli.logging.LogFactory.getLog( StandardHost.class );
 
     // ----------------------------------------------------------- Constructors
 
@@ -98,16 +85,14 @@ public class StandardHost extends ContainerBase implements Host {
      * The Java class name of the default context configuration class
      * for deployed web applications.
      */
-    private String configClass =
-        "org.apache.catalina.startup.ContextConfig";
+    private String configClass = "org.apache.catalina.startup.ContextConfig";
 
 
     /**
      * The Java class name of the default Context implementation class for
      * deployed web applications.
      */
-    private String contextClass =
-        "org.apache.catalina.core.StandardContext";
+    private String contextClass = "org.apache.catalina.core.StandardContext";
 
 
     /**
@@ -134,14 +119,12 @@ public class StandardHost extends ContainerBase implements Host {
      * The Java class name of the default error reporter implementation class
      * for deployed web applications.
      */
-    private String errorReportValveClass =
-        "org.apache.catalina.valves.ErrorReportValve";
+    private String errorReportValveClass = "org.apache.catalina.valves.ErrorReportValve";
 
     /**
      * The descriptive information string for this implementation.
      */
-    private static final String info =
-        "org.apache.catalina.core.StandardHost/1.0";
+    private static final String info = "org.apache.catalina.core.StandardHost/1.0";
 
 
     /**
@@ -333,8 +316,7 @@ public class StandardHost extends ContainerBase implements Host {
 
         String oldConfigClass = this.configClass;
         this.configClass = configClass;
-        support.firePropertyChange("configClass",
-                                   oldConfigClass, this.configClass);
+        support.firePropertyChange("configClass",oldConfigClass, this.configClass);
 
     }
 

@@ -17,13 +17,6 @@
 
 package org.apache.catalina.util;
 
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanRegistration;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-
 import org.apache.catalina.Globals;
 import org.apache.catalina.LifecycleException;
 import org.apache.juli.logging.Log;
@@ -31,13 +24,13 @@ import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.modeler.Registry;
 import org.apache.tomcat.util.res.StringManager;
 
-public abstract class LifecycleMBeanBase extends LifecycleBase
-        implements MBeanRegistration {
+import javax.management.*;
+
+public abstract class LifecycleMBeanBase extends LifecycleBase implements MBeanRegistration {
 
     private static Log log = LogFactory.getLog(LifecycleMBeanBase.class);
     
-    private static StringManager sm =
-        StringManager.getManager("org.apache.catalina.util");
+    private static StringManager sm = StringManager.getManager("org.apache.catalina.util");
 
     
     /* Cache components of the MBean registration. */
@@ -142,8 +135,7 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
      *
      * @return  The name used to register the object
      */
-    protected final ObjectName register(Object obj,
-            String objectNameKeyProperties) {
+    protected final ObjectName register(Object obj, String objectNameKeyProperties) {
         
         // Construct an object name with the right domain
         StringBuilder name = new StringBuilder(getDomain());
@@ -233,8 +225,7 @@ public abstract class LifecycleMBeanBase extends LifecycleBase
      * {@link MBeanServer} and/or {@link ObjectName}.
      */
     @Override
-    public final ObjectName preRegister(MBeanServer server, ObjectName name)
-            throws Exception {
+    public final ObjectName preRegister(MBeanServer server, ObjectName name) throws Exception {
         
         this.mserver = server;
         this.oname = name;
