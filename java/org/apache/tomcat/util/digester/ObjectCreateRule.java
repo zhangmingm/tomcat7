@@ -66,9 +66,7 @@ public class ObjectCreateRule extends Rule {
      * @param attributeName Attribute name which, if present, contains an
      *  override of the class name to create
      */
-    public ObjectCreateRule(String className,
-                            String attributeName) {
-
+    public ObjectCreateRule(String className,String attributeName) {
         this.className = className;
         this.attributeName = attributeName;
 

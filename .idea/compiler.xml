@@ -17,15 +17,15 @@
       <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
       </profile>
-      <profile default="false" name="Annotation profile for tomcat7" enabled="true">
+      <profile default="false" name="Annotation profile for snmpdemo" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="tomcat7" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="snmpdemo" target="1.6" />
       <module name="tomcat7" target="1.7" />
     </bytecodeTargetLevel>
   </component>

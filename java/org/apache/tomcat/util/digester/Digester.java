@@ -18,40 +18,22 @@
 package org.apache.tomcat.util.digester;
 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.EmptyStackException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.IntrospectionUtils;
-import org.xml.sax.Attributes;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLReader;
+import org.xml.sax.*;
 import org.xml.sax.ext.DefaultHandler2;
 import org.xml.sax.helpers.AttributesImpl;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
 
 
 /**
@@ -2118,12 +2100,8 @@ public class Digester extends DefaultHandler2 {
      *  the default Java class name to be created
      * @see ObjectCreateRule
      */
-    public void addObjectCreate(String pattern, String className,
-                                String attributeName) {
-
-        addRule(pattern,
-                new ObjectCreateRule(className, attributeName));
-
+    public void addObjectCreate(String pattern, String className,String attributeName) {
+        addRule(pattern,new ObjectCreateRule(className, attributeName));
     }
 
 
@@ -2218,10 +2196,7 @@ public class Digester extends DefaultHandler2 {
      * @see SetPropertiesRule
      */
     public void addSetProperties(String pattern) {
-
-        addRule(pattern,
-                new SetPropertiesRule());
-
+        addRule(pattern,new SetPropertiesRule());
     }
 
     /**

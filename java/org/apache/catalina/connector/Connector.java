@@ -564,15 +564,11 @@ public class Connector extends LifecycleMBeanBase  {
      */
     public String getProtocol() {
 
-        if ("org.apache.coyote.http11.Http11Protocol".equals
-            (getProtocolHandlerClassName())
-            || "org.apache.coyote.http11.Http11AprProtocol".equals
-            (getProtocolHandlerClassName())) {
+        if ("org.apache.coyote.http11.Http11Protocol".equals(getProtocolHandlerClassName())
+            || "org.apache.coyote.http11.Http11AprProtocol".equals(getProtocolHandlerClassName())) {
             return "HTTP/1.1";
-        } else if ("org.apache.coyote.ajp.AjpProtocol".equals
-                   (getProtocolHandlerClassName())
-                   || "org.apache.coyote.ajp.AjpAprProtocol".equals
-                   (getProtocolHandlerClassName())) {
+        } else if ("org.apache.coyote.ajp.AjpProtocol".equals(getProtocolHandlerClassName())
+                   || "org.apache.coyote.ajp.AjpAprProtocol".equals(getProtocolHandlerClassName())) {
             return "AJP/1.3";
         }
         return getProtocolHandlerClassName();
@@ -586,27 +582,21 @@ public class Connector extends LifecycleMBeanBase  {
      * @param protocol The Coyote protocol name
      */
     public void setProtocol(String protocol) {
-
         if (AprLifecycleListener.isAprAvailable()) {
             if ("HTTP/1.1".equals(protocol)) {
-                setProtocolHandlerClassName
-                    ("org.apache.coyote.http11.Http11AprProtocol");
+                setProtocolHandlerClassName("org.apache.coyote.http11.Http11AprProtocol");
             } else if ("AJP/1.3".equals(protocol)) {
-                setProtocolHandlerClassName
-                    ("org.apache.coyote.ajp.AjpAprProtocol");
+                setProtocolHandlerClassName("org.apache.coyote.ajp.AjpAprProtocol");
             } else if (protocol != null) {
                 setProtocolHandlerClassName(protocol);
             } else {
-                setProtocolHandlerClassName
-                    ("org.apache.coyote.http11.Http11AprProtocol");
+                setProtocolHandlerClassName("org.apache.coyote.http11.Http11AprProtocol");
             }
         } else {
             if ("HTTP/1.1".equals(protocol)) {
-                setProtocolHandlerClassName
-                    ("org.apache.coyote.http11.Http11Protocol");
+                setProtocolHandlerClassName("org.apache.coyote.http11.Http11Protocol");
             } else if ("AJP/1.3".equals(protocol)) {
-                setProtocolHandlerClassName
-                    ("org.apache.coyote.ajp.AjpProtocol");
+                setProtocolHandlerClassName("org.apache.coyote.ajp.AjpProtocol");
             } else if (protocol != null) {
                 setProtocolHandlerClassName(protocol);
             }

@@ -22,14 +22,13 @@ package org.apache.catalina.security;
  * Static class used to preload java classes when using the
  * Java SecurityManager so that the defineClassInPackage
  * RuntimePermission does not trigger an AccessControlException.
- *
+ * 安全加载load
  * @author Glenn L. Nielsen
  * @author Jean-Francois Arcand
  */
 public final class SecurityClassLoad {
 
-    public static void securityClassLoad(ClassLoader loader)
-        throws Exception {
+    public static void securityClassLoad(ClassLoader loader)throws Exception {
 
         if( System.getSecurityManager() == null ){
             return;
@@ -49,79 +48,45 @@ public final class SecurityClassLoad {
     }
 
 
-    private static final void loadCorePackage(ClassLoader loader)
-        throws Exception {
+    /**
+     * 加载 org.apache.catalina.core 下的类。
+     * @param loader
+     * @throws Exception
+     */
+    private static final void loadCorePackage(ClassLoader loader)throws Exception {
         final String basePackage = "org.apache.catalina.core.";
-        loader.loadClass
-            (basePackage +
-             "AccessLogAdapter");
-        loader.loadClass
-            (basePackage +
-             "ApplicationContextFacade$1");
-        loader.loadClass
-            (basePackage +
-             "ApplicationDispatcher$PrivilegedForward");
-        loader.loadClass
-            (basePackage +
-             "ApplicationDispatcher$PrivilegedInclude");
-        loader.loadClass
-            (basePackage +
-            "AsyncContextImpl");
-        loader.loadClass
-            (basePackage +
-            "AsyncContextImpl$DebugException");
-        loader.loadClass
-            (basePackage +
-            "AsyncContextImpl$1");
-        loader.loadClass
-            (basePackage +
-            "AsyncListenerWrapper");
-        loader.loadClass
-            (basePackage +
-             "ContainerBase$PrivilegedAddChild");
-        loader.loadClass
-            (basePackage +
-             "DefaultInstanceManager$1");
-        loader.loadClass
-            (basePackage +
-             "DefaultInstanceManager$2");
-        loader.loadClass
-            (basePackage +
-             "DefaultInstanceManager$3");
-        loader.loadClass
-            (basePackage +
-             "DefaultInstanceManager$AnnotationCacheEntry");
-        loader.loadClass
-            (basePackage +
-             "DefaultInstanceManager$AnnotationCacheEntryType");
-        loader.loadClass
-            (basePackage +
-             "ApplicationHttpRequest$AttributeNamesEnumerator");
+        loader.loadClass (basePackage+"AccessLogAdapter");
+        loader.loadClass (basePackage +"ApplicationContextFacade$1");
+        loader.loadClass (basePackage +"ApplicationDispatcher$PrivilegedForward");
+        loader.loadClass (basePackage +"ApplicationDispatcher$PrivilegedInclude");
+        loader.loadClass (basePackage +"AsyncContextImpl");
+        loader.loadClass (basePackage + "AsyncContextImpl$DebugException");
+        loader.loadClass (basePackage + "AsyncContextImpl$1");
+        loader.loadClass (basePackage + "AsyncListenerWrapper");
+        loader.loadClass (basePackage + "ContainerBase$PrivilegedAddChild");
+        loader.loadClass (basePackage + "DefaultInstanceManager$1");
+        loader.loadClass (basePackage + "DefaultInstanceManager$2");
+        loader.loadClass (basePackage + "DefaultInstanceManager$3");
+        loader.loadClass (basePackage + "DefaultInstanceManager$AnnotationCacheEntry");
+        loader.loadClass (basePackage + "DefaultInstanceManager$AnnotationCacheEntryType");
+        loader.loadClass (basePackage + "ApplicationHttpRequest$AttributeNamesEnumerator");
     }
 
 
-    private static final void loadLoaderPackage(ClassLoader loader)
-        throws Exception {
+    private static final void loadLoaderPackage(ClassLoader loader) throws Exception {
         final String basePackage = "org.apache.catalina.loader.";
-        loader.loadClass
-            (basePackage +
-             "ResourceEntry");
-        loader.loadClass
-            (basePackage +
-             "WebappClassLoaderBase$PrivilegedFindResourceByName");
+        loader.loadClass (basePackage + "ResourceEntry");
+        loader.loadClass (basePackage + "WebappClassLoaderBase$PrivilegedFindResourceByName");
     }
 
 
-    private static final void loadRealmPackage(ClassLoader loader)
-            throws Exception {
+    private static final void loadRealmPackage(ClassLoader loader) throws Exception {
         final String basePackage = "org.apache.catalina.realm.";
-        loader.loadClass
-            (basePackage + "LockOutRealm$LockRecord");
+        loader.loadClass (basePackage + "LockOutRealm$LockRecord");
     }
 
 
-    private static final void loadServletsPackage(ClassLoader loader)
-            throws Exception {
+    private static final void loadServletsPackage(ClassLoader loader) throws Exception {
         final String basePackage = "org.apache.catalina.servlets.";
         // Avoid a possible memory leak in the DefaultServlet when running with
         // a security manager. The DefaultServlet needs to load an XML parser
@@ -260,8 +225,7 @@ public final class SecurityClassLoad {
              "Response$3");
     }
 
-    private static final void loadTomcatPackage(ClassLoader loader)
-        throws Exception {
+    private static final void loadTomcatPackage(ClassLoader loader) throws Exception {
         final String basePackage = "org.apache.tomcat.";
         // buf
         loader.loadClass(basePackage + "util.buf.HexUtils");
@@ -272,8 +236,7 @@ public final class SecurityClassLoad {
         // http
         loader.loadClass(basePackage + "util.http.HttpMessages");
         // Make sure system property is read at this point
-        Class<?> clazz = loader.loadClass(
-                basePackage + "util.http.FastHttpDateFormat");
+        Class<?> clazz = loader.loadClass( basePackage + "util.http.FastHttpDateFormat");
         clazz.newInstance();
         loader.loadClass(basePackage + "util.http.HttpMessages");
         loader.loadClass(basePackage + "util.http.parser.HttpParser");
@@ -282,12 +245,9 @@ public final class SecurityClassLoad {
         loader.loadClass(basePackage + "util.http.parser.MediaTypeCache");
         // net
         loader.loadClass(basePackage + "util.net.Constants");
-        loader.loadClass(basePackage +
-                "util.net.NioBlockingSelector$BlockPoller$1");
-        loader.loadClass(basePackage +
-                "util.net.NioBlockingSelector$BlockPoller$2");
-        loader.loadClass(basePackage +
-                "util.net.NioBlockingSelector$BlockPoller$3");
+        loader.loadClass(basePackage + "util.net.NioBlockingSelector$BlockPoller$1");
+        loader.loadClass(basePackage + "util.net.NioBlockingSelector$BlockPoller$2");
+        loader.loadClass(basePackage + "util.net.NioBlockingSelector$BlockPoller$3");
         loader.loadClass(basePackage + "util.net.SSLSupport$CipherData");
         // security
         loader.loadClass(basePackage + "util.security.PrivilegedGetTccl");

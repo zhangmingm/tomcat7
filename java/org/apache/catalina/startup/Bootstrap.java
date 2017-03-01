@@ -75,6 +75,9 @@ public final class Bootstrap {
     // -------------------------------------------------------- Private Methods
 
 
+    /**
+     * 加载conf 下的catalina.properties 文件里配置了的各种Loader.
+     */
     private void initClassLoaders() {
         try {
             commonLoader = createClassLoader("common", null);
@@ -83,6 +86,7 @@ public final class Bootstrap {
                 commonLoader=this.getClass().getClassLoader();
             }
             catalinaLoader = createClassLoader("server", commonLoader);
+//            共享loader
             sharedLoader = createClassLoader("shared", commonLoader);
         } catch (Throwable t) {
             handleThrowable(t);
@@ -92,15 +96,33 @@ public final class Bootstrap {
     }
 
 
-    private ClassLoader createClassLoader(String name, ClassLoader parent)
-        throws Exception {
-
+    /**
+     * 获取conf 下的catalina.properties 文件，该文件里配置了 common.loader对应的*.jar的目录。
+     * @param name common
+     * @param parent null
+     * @return
+     * @throws Exception
+     */
+    private ClassLoader createClassLoader(String name, ClassLoader parent)throws Exception {
         String value = CatalinaProperties.getProperty(name + ".loader");
+        System.out.println("加载的common.loader值 -->"+value);
+        /**
+         * ${catalina.base}/lib,
+         * ${catalina.base}/lib/*.jar,
+         * ${catalina.home}/lib,
+         * ${catalina.home}/lib/*.jar
+         */
+//
         if ((value == null) || (value.equals("")))
             return parent;
-
         value = replace(value);
-
+        /**
+         * C:\CodeRepository\tomcat7/lib,
+         * C:\CodeRepository\tomcat7/lib/*.jar,
+         * C:\CodeRepository\tomcat7/lib,
+         * C:\CodeRepository\tomcat7/lib/*.jar
+         */
+//
         List<Repository> repositories = new ArrayList<Repository>();
 
         StringTokenizer tokenizer = new StringTokenizer(value, ",");
@@ -198,28 +220,34 @@ public final class Bootstrap {
         // Load our startup class and call its process() method
         if (log.isDebugEnabled())
             log.debug("Loading startup class");
+
         Class<?> startupClass = catalinaLoader.loadClass ("org.apache.catalina.startup.Catalina");
+
+//        启动的类 Catalina 的实例
         Object startupInstance = startupClass.newInstance();
 
         // Set the shared extensions class loader
         if (log.isDebugEnabled())
             log.debug("Setting startup class properties");
+
         String methodName = "setParentClassLoader";
         Class<?> paramTypes[] = new Class[1];
         paramTypes[0] = Class.forName("java.lang.ClassLoader");
         Object paramValues[] = new Object[1];
         paramValues[0] = sharedLoader;
+//        找到Catalina类中方法名为setParentClassLoader，参数类型为Class，值为java.lang.ClassLoader的方法。
         Method method = startupInstance.getClass().getMethod(methodName, paramTypes);
+//        执行方法
         method.invoke(startupInstance, paramValues);
         catalinaDaemon = startupInstance;
     }
 
 
     /**
-     * Load daemon.
+     * Load daemon. 加载守护进程
+     * 调用Catalina类的load(String args[])方法。会启动一个新的server实例。
      */
-    private void load(String[] arguments)
-        throws Exception {
+    private void load(String[] arguments)throws Exception {
 
         // Call the load() method
         String methodName = "load";
@@ -234,8 +262,7 @@ public final class Bootstrap {
             param = new Object[1];
             param[0] = arguments;
         }
-        Method method =
-            catalinaDaemon.getClass().getMethod(methodName, paramTypes);
+        Method method =catalinaDaemon.getClass().getMethod(methodName, paramTypes);
         if (log.isDebugEnabled())
             log.debug("Calling startup class " + method);
         method.invoke(catalinaDaemon, param);
@@ -325,16 +352,14 @@ public final class Bootstrap {
 
     /**
      * Set flag.
+     * 调用Catalina类的setAwait方法，设置为true。
      */
-    public void setAwait(boolean await)
-        throws Exception {
-
+    public void setAwait(boolean await) throws Exception {
         Class<?> paramTypes[] = new Class[1];
         paramTypes[0] = Boolean.TYPE;
         Object paramValues[] = new Object[1];
         paramValues[0] = Boolean.valueOf(await);
-        Method method =
-            catalinaDaemon.getClass().getMethod("setAwait", paramTypes);
+        Method method = catalinaDaemon.getClass().getMethod("setAwait", paramTypes);
         method.invoke(catalinaDaemon, paramValues);
 
     }
@@ -365,7 +390,7 @@ public final class Bootstrap {
      * @param args Command line arguments to be processed
      */
     public static void main(String args[]) {
-        System.out.println("*******************tomcat 启动了.....");
+        System.out.println("*******************  tomcat 启动了.....");
         if (daemon == null) {
             // Don't set daemon until init() has completed
             Bootstrap bootstrap = new Bootstrap();
@@ -399,6 +424,10 @@ public final class Bootstrap {
                 daemon.stop();
             } else if (command.equals("start")) {
                 daemon.setAwait(true);
+                System.out.println("args.length = "+args.length);
+                for(String s:args){
+                    System.out.println("args ==>"+ s);
+                }
                 daemon.load(args);
                 daemon.start();
             } else if (command.equals("stop")) {
@@ -439,15 +468,12 @@ public final class Bootstrap {
      * working directory if it has not been set.
      */
     private void setCatalinaBase() {
-
         if (System.getProperty(Globals.CATALINA_BASE_PROP) != null)
             return;
         if (System.getProperty(Globals.CATALINA_HOME_PROP) != null)
             System.setProperty(Globals.CATALINA_BASE_PROP,System.getProperty(Globals.CATALINA_HOME_PROP));
         else
-            System.setProperty(Globals.CATALINA_BASE_PROP,
-                               System.getProperty("user.dir"));
-
+            System.setProperty(Globals.CATALINA_BASE_PROP,System.getProperty("user.dir"));
     }
 
 
@@ -456,6 +482,7 @@ public final class Bootstrap {
      * working directory if it has not been set.
      */
     private void setCatalinaHome() {
+//        获取指定键指示的系统属性。 getProperty(String key)
         if (System.getProperty(Globals.CATALINA_HOME_PROP) != null)
             return;
         File bootstrapJar = new File(System.getProperty("user.dir"), "bootstrap.jar");

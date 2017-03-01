@@ -36,8 +36,7 @@ public abstract class LifecycleBase implements Lifecycle {
 
     private static Log log = LogFactory.getLog(LifecycleBase.class);
     
-    private static StringManager sm =
-        StringManager.getManager("org.apache.catalina.util");
+    private static StringManager sm = StringManager.getManager("org.apache.catalina.util");
 
 
     /**
@@ -99,6 +98,9 @@ public abstract class LifecycleBase implements Lifecycle {
         setStateInternal(LifecycleState.INITIALIZING, null, false);
 
         try {
+            /**
+             * 初始化内部？
+             */
             initInternal();
         } catch (Throwable t) {
             ExceptionUtils.handleThrowable(t);

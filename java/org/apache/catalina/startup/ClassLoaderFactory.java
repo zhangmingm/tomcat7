@@ -19,6 +19,9 @@
 package org.apache.catalina.startup;
 
 
+import org.apache.juli.logging.Log;
+import org.apache.juli.logging.LogFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -30,9 +33,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
 
 
 /**
@@ -76,10 +76,7 @@ public final class ClassLoaderFactory {
      *
      * @exception Exception if an error occurs constructing the class loader
      */
-    public static ClassLoader createClassLoader(File unpacked[],
-                                                File packed[],
-                                                final ClassLoader parent)
-        throws Exception {
+    public static ClassLoader createClassLoader(File unpacked[],File packed[],final ClassLoader parent)throws Exception {
 
         if (log.isDebugEnabled())
             log.debug("Creating new class loader");
@@ -152,9 +149,7 @@ public final class ClassLoaderFactory {
      *
      * @exception Exception if an error occurs constructing the class loader
      */
-    public static ClassLoader createClassLoader(List<Repository> repositories,
-                                                final ClassLoader parent)
-        throws Exception {
+    public static ClassLoader createClassLoader(List<Repository> repositories,final ClassLoader parent)throws Exception {
 
         if (log.isDebugEnabled())
             log.debug("Creating new class loader");

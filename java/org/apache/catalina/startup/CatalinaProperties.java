@@ -18,6 +18,8 @@
 
 package org.apache.catalina.startup;
 
+import org.apache.catalina.Globals;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,8 +27,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Properties;
-
-import org.apache.catalina.Globals;
 
 
 /**
@@ -40,29 +40,23 @@ public class CatalinaProperties {
 
     // ------------------------------------------------------- Static Variables
 
-    private static final org.apache.juli.logging.Log log=
-        org.apache.juli.logging.LogFactory.getLog( CatalinaProperties.class );
+    private static final org.apache.juli.logging.Log log=org.apache.juli.logging.LogFactory.getLog( CatalinaProperties.class );
 
     private static Properties properties = null;
 
 
     static {
-
         loadProperties();
-
     }
 
 
     // --------------------------------------------------------- Public Methods
 
-
     /**
      * Return specified property value.
      */
     public static String getProperty(String name) {
-    
         return properties.getProperty(name);
-
     }
 
 
@@ -84,9 +78,11 @@ public class CatalinaProperties {
 
     /**
      * Load properties.
+     * 加载 conf 下的catalina.properties 文件，该文件里配置了 common.loader，值为：
+     * common.loader=${catalina.base}/lib,${catalina.base}/lib/*.jar,${catalina.home}/lib,${catalina.home}/lib/*.jar
+     *
      */
     private static void loadProperties() {
-
         InputStream is = null;
         Throwable error = null;
 
@@ -99,11 +95,15 @@ public class CatalinaProperties {
             handleThrowable(t);
         }
 
+        /**
+         * 获取 catalina.properties 文件，将里面的属性设置到System中。
+         * 最开始System可能没有这些属性。
+         */
         if (is == null) {
             try {
-                File home = new File(getCatalinaBase());
-                File conf = new File(home, "conf");
-                File propsFile = new File(conf, "catalina.properties");
+                File home = new File(getCatalinaBase()); // C:\CodeRepository\tomcat7
+                File conf = new File(home, "conf"); // C:\CodeRepository\tomcat7\conf
+                File propsFile = new File(conf, "catalina.properties"); // C:\CodeRepository\tomcat7\conf\catalina.properties
                 is = new FileInputStream(propsFile);
             } catch (Throwable t) {
                 handleThrowable(t);
@@ -112,8 +112,7 @@ public class CatalinaProperties {
 
         if (is == null) {
             try {
-                is = CatalinaProperties.class.getResourceAsStream
-                    ("/org/apache/catalina/startup/catalina.properties");
+                is = CatalinaProperties.class.getResourceAsStream("/org/apache/catalina/startup/catalina.properties");
             } catch (Throwable t) {
                 handleThrowable(t);
             }
@@ -126,9 +125,7 @@ public class CatalinaProperties {
             } catch (Throwable t) {
                 handleThrowable(t);
                 error = t;
-            }
-            finally
-            {
+            }finally{
                 try {
                     is.close();
                 } catch (IOException ioe) {
@@ -144,12 +141,17 @@ public class CatalinaProperties {
             properties=new Properties();
         }
 
-        // Register the properties as system properties
+        /**
+         * Register the properties as system properties
+         * properties.propertyNames() --> 返回属性列表中所有键的枚举，如果在主属性列表中未找到同名的键，则包括默认属性列表中不同的键。
+         * 将 catalina.properties 中配置的键值对写到System的属性中。
+         */
         Enumeration<?> enumeration = properties.propertyNames();
         while (enumeration.hasMoreElements()) {
             String name = (String) enumeration.nextElement();
             String value = properties.getProperty(name);
             if (value != null) {
+                System.out.println("加载catalina.properties中配置的键值对:name = "+name+"; value = "+value);
                 System.setProperty(name, value);
             }
         }
@@ -159,10 +161,16 @@ public class CatalinaProperties {
 
     /**
      * Get the value of the catalina.home environment variable.
+     * 用户的主目录 user.dir 工程所在的目录。 C:\CodeRepository\tomcat7
+     *   System.getProperty(String key,String def) 获取用指定键描述的系统属性。
+     *   key - 系统属性的名称。def - 默认值。 系统属性的字符串值，如果没有带有此键的属性，则返回默认值。
      */
     private static String getCatalinaHome() {
-        return System.getProperty(Globals.CATALINA_HOME_PROP,
-                                  System.getProperty("user.dir"));
+        String userDir=System.getProperty("user.dir");
+        log.info("user.dir  ======"+userDir);
+        String catalinaHome=System.getProperty(Globals.CATALINA_HOME_PROP,userDir);
+        log.info("catalina.home  ======"+catalinaHome);
+        return System.getProperty(Globals.CATALINA_HOME_PROP,userDir);
     }
     
     

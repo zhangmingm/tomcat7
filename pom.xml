@@ -5,6 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.tomcat</groupId>
     <artifactId>tomcat7</artifactId>
+    <packaging>pom</packaging>
     <name>tomcat7</name>
     <version>7.0</version>
     <build>
@@ -39,6 +40,9 @@
             </plugin>
         </plugins>
     </build>
+    <modules>
+        <module>../snmpdemo</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
