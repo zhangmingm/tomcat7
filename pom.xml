@@ -40,9 +40,6 @@
             </plugin>
         </plugins>
     </build>
-    <modules>
-        <module>../snmpdemo</module>
-    </modules>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
