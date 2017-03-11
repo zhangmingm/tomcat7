@@ -89,9 +89,9 @@ public abstract class LifecycleBase implements Lifecycle {
         lifecycle.fireLifecycleEvent(type, data);
     }
 
-    
     @Override
     public final synchronized void init() throws LifecycleException {
+        System.out.println("state == "+state);
         if (!state.equals(LifecycleState.NEW)) {
             invalidTransition(Lifecycle.BEFORE_INIT_EVENT);
         }
@@ -105,8 +105,7 @@ public abstract class LifecycleBase implements Lifecycle {
         } catch (Throwable t) {
             ExceptionUtils.handleThrowable(t);
             setStateInternal(LifecycleState.FAILED, null, false);
-            throw new LifecycleException(
-                    sm.getString("lifecycleBase.initFail",toString()), t);
+            throw new LifecycleException(sm.getString("lifecycleBase.initFail",toString()), t);
         }
 
         setStateInternal(LifecycleState.INITIALIZED, null, false);
@@ -356,8 +355,7 @@ public abstract class LifecycleBase implements Lifecycle {
         setStateInternal(state, data, true);
     }
 
-    private synchronized void setStateInternal(LifecycleState state,
-            Object data, boolean check) throws LifecycleException {
+    private synchronized void setStateInternal(LifecycleState state,Object data, boolean check) throws LifecycleException {
         
         if (log.isDebugEnabled()) {
             log.debug(sm.getString("lifecycleBase.setState", this, state));
@@ -397,9 +395,13 @@ public abstract class LifecycleBase implements Lifecycle {
         }
     }
 
+    /**
+     * 作废转换？
+     * @param type
+     * @throws LifecycleException
+     */
     private void invalidTransition(String type) throws LifecycleException {
-        String msg = sm.getString("lifecycleBase.invalidTransition", type,
-                toString(), state);
+        String msg = sm.getString("lifecycleBase.invalidTransition", type,toString(), state);
         throw new LifecycleException(msg);
     }
 }

@@ -97,7 +97,6 @@ public class Catalina {
 
     /**
      * Are we starting a new server?
-     *
      * @deprecated  Unused - will be removed in Tomcat 8.0.x
      */
     @Deprecated
@@ -106,7 +105,6 @@ public class Catalina {
 
     /**
      * Are we stopping an existing server?
-     *
      * @deprecated  Unused - will be removed in Tomcat 8.0.x
      */
     @Deprecated
@@ -593,7 +591,6 @@ public class Catalina {
              * 调用LifecycleBase的init方法。
              */
             serverr.init();
-//            getServer().init();
         } catch (LifecycleException e) {
             if (Boolean.getBoolean("org.apache.catalina.startup.EXIT_ON_INIT_FAILURE")) {
                 throw new java.lang.Error(e);
@@ -647,8 +644,6 @@ public class Catalina {
 
         // Start the new server
         try {
-            Server ss1= getServer(); //
-            System.out.println("getServer() 111 的实例对象 == "+ss1.getClass().getName());
             getServer().start();
         } catch (LifecycleException e) {
             log.fatal(sm.getString("catalina.serverStartFail"), e);
